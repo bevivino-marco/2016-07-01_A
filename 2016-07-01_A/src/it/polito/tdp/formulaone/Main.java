@@ -13,7 +13,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("FormulaOne.fxml"));
-			BorderPane root = (BorderPane) loader.load();
+			BorderPane root = (BorderPane)loader.load();
 			Scene scene = new Scene(root);
 			FormulaOneController controller = loader.getController();
 			Model model = new Model();
