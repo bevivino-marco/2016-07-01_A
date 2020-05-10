@@ -119,7 +119,7 @@ public class FormulaOneDAO {
 
 		String sql = "SELECT DISTINCT  drivers.driverId, drivers.driverRef ,drivers.number,drivers.code, drivers.forename ,drivers.surname " + 
 				"FROM results, races , drivers " + 
-				"WHERE results.raceId= races.raceId AND races.year=? AND  results.driverId=drivers.driverId " + 
+				"WHERE results.raceId= races.raceId AND races.year=? AND  results.driverId=drivers.driverId AND results.position IS NOT NULL  " + 
 				"ORDER BY results.driverId ASC  ";
 
 		try {
@@ -147,7 +147,7 @@ public class FormulaOneDAO {
 
 		String sql = "SELECT COUNT(*) AS c " + 
 				"FROM results AS r1, results AS r2 , races " + 
-				"WHERE r1.raceId=r2.raceId  AND r1.raceId=races.raceId AND races.year=? AND r1.driverId=? AND r1.position=1 AND r2.driverId=? ";
+				"WHERE r1.raceId=r2.raceId  AND r1.raceId=races.raceId AND races.year=? AND r1.driverId=? AND r1.position<r2.position AND r2.driverId=? ";
 
 		try {
 			int result=0;
