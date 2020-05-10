@@ -94,8 +94,13 @@ public class Model {
 
 	private int getPunteggio(List<Driver> parziale) {
 		int p = 0;
+		List<Driver> contro = new LinkedList<>(grafo.vertexSet());
+		contro.removeAll(parziale);
 		for (Driver d : parziale) {
-			p+=Graphs.predecessorListOf(grafo, d).size();
+			for (Driver d2 : Graphs.predecessorListOf(grafo, d)) {
+				p+= grafo.getEdgeWeight(grafo.getEdge(d2, d));
+			}
+			
 		}
 		return p;
 	}
