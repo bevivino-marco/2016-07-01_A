@@ -10,12 +10,9 @@ public class Driver {
 	private String code;
 	private String forename;
 	private String surname;
-	private LocalDate dob;
-	private String nationality;
-	private String url;
+	
 
-	public Driver(int driverId, String driverRef, int number, String code, String forename, String surname,
-			LocalDate dob, String nationality, String url) {
+	public Driver(int driverId, String driverRef, int number, String code, String forename, String surname) {
 		super();
 		this.driverId = driverId;
 		this.driverRef = driverRef;
@@ -23,9 +20,7 @@ public class Driver {
 		this.code = code;
 		this.forename = forename;
 		this.surname = surname;
-		this.dob = dob;
-		this.nationality = nationality;
-		this.url = url;
+	
 	}
 
 	public int getDriverId() {
@@ -76,28 +71,8 @@ public class Driver {
 		this.surname = surname;
 	}
 
-	public LocalDate getDob() {
-		return dob;
-	}
 
-	public void setDob(LocalDate dob) {
-		this.dob = dob;
-	}
 
-	public String getNationality() {
-		return nationality;
-	}
-
-	public void setNationality(String nationality) {
-		this.nationality = nationality;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
+	
 
 }

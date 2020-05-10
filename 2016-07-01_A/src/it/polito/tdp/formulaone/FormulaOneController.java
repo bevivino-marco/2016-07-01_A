@@ -21,7 +21,7 @@ public class FormulaOneController {
     private URL location;
 
     @FXML
-    private ComboBox<?> boxAnno;
+    private ComboBox<Integer> boxAnno;
 
     @FXML
     private TextField textInputK;
@@ -31,6 +31,12 @@ public class FormulaOneController {
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
+    	try {
+    		model.creaGrafo(boxAnno.getValue());
+    		
+    	}catch (Exception e ) {
+    		txtResult.appendText("inserire un anno");
+    	}
 
     }
 
@@ -49,5 +55,6 @@ public class FormulaOneController {
     
     public void setModel(Model model){
     	this.model = model;
+    	boxAnno.getItems().addAll(model.getAnni());
     }
 }

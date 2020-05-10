@@ -6,10 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import it.polito.tdp.formulaone.model.Circuit;
 import it.polito.tdp.formulaone.model.Constructor;
+import it.polito.tdp.formulaone.model.Driver;
 import it.polito.tdp.formulaone.model.Season;
 
 
@@ -17,7 +19,7 @@ public class FormulaOneDAO {
 
 	public List<Integer> getAllYearsOfRace() {
 		
-		String sql = "SELECT year FROM races ORDER BY year" ;
+		String sql = "SELECT DISTINCT year FROM races ORDER BY year ASC" ;
 		
 		try {
 			Connection conn = ConnectDB.getConnection() ;
@@ -106,6 +108,65 @@ public class FormulaOneDAO {
 
 			conn.close();
 			return constructors;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("SQL Query Error");
+		}
+	}
+
+	public List <Driver> getPiloti(int anno) {
+
+
+		String sql = "SELECT DISTINCT  drivers.driverId, drivers.driverRef ,drivers.number,drivers.code, drivers.forename ,drivers.surname " + 
+				"FROM results, races , drivers " + 
+				"WHERE results.raceId= races.raceId AND races.year=? AND  results.driverId=drivers.driverId " + 
+				"ORDER BY results.driverId ASC  ";
+
+		try {
+			Connection conn = ConnectDB.getConnection();
+
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, anno);
+			ResultSet rs = st.executeQuery();
+
+			List<Driver> d = new LinkedList<Driver>();
+			while (rs.next()) {
+				d.add(new Driver (rs.getInt("drivers.driverId"),rs.getString("drivers.driverRef"),rs.getInt("drivers.number"),rs.getString("drivers.code"),rs.getString("drivers.forename"),rs.getString("drivers.surname")));
+			
+			}
+
+			conn.close();
+			return d;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("SQL Query Error");
+		}
+	}
+
+	public int getPeso(int anno, int id1, int id2) {
+
+		String sql = "SELECT COUNT(*) AS c " + 
+				"FROM results AS r1, results AS r2 , races " + 
+				"WHERE r1.raceId=r2.raceId  AND r1.raceId=races.raceId AND races.year=? AND r1.driverId=? AND r1.position=1 AND r2.driverId=? ";
+
+		try {
+			int result=0;
+			Connection conn = ConnectDB.getConnection();
+
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, anno);
+			st.setInt(2, id1);
+			st.setInt(3, id2);
+			
+			ResultSet rs = st.executeQuery();
+
+			
+			if (rs.next()) {
+				 result = rs.getInt("c");
+			}
+
+			conn.close();
+			return result;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("SQL Query Error");
