@@ -37,7 +37,7 @@ public class Model {
 	   for (Driver d1 : grafo.vertexSet()) {
 		   for (Driver d2 : grafo.vertexSet()) {
 			   int peso = dao.getPeso(anno , d1.getDriverId(), d2.getDriverId());
-			   if (peso>0 && d1.getDriverId()<d2.getDriverId()) {
+			   if (peso>0 ) {
 				   Graphs.addEdgeWithVertices(grafo , d1, d2, peso);
 			   }
 		   }
