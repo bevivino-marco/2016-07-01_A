@@ -71,6 +71,11 @@ public class Driver {
 		this.surname = surname;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("Driver %s   %s %s\n", driverId, forename, surname);
+	}
+
 
 
 	

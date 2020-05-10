@@ -3,7 +3,6 @@ package it.polito.tdp.formulaone.model;
 import java.util.*;
 
 import org.jgrapht.Graphs;
-import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
@@ -13,6 +12,8 @@ public class Model {
 	private FormulaOneDAO dao;
 	private SimpleDirectedWeightedGraph<Driver, DefaultWeightedEdge> grafo;
 	private List <Driver> listaD;
+	private int min;
+	private int M=0;
     public Model () {
     	dao = new FormulaOneDAO();
     	
@@ -49,5 +50,58 @@ public class Model {
 
 	}
 
+	public String DreamTeam(int k){
+		List <Driver> parziale = new LinkedList<>();
+		List <Driver> finale = new LinkedList<>();
+		min =  Integer.MAX_VALUE;
+		
+		
+		cerca (0, parziale, finale, k);
+		
+		return finale+" "+min;
+		
+	}
+	
+	
+	public void cerca (int livello, List <Driver >parziale,List<Driver> finale, int k) {
+		
+		if (livello == k) {
+			int p =getPunteggio(parziale);
+			System.out.println(parziale.toString()+"+++++"+p+"\n");
+			if (p<min) {
+				//System.out.println(p+" "+min+"\n");
+				finale.clear();
+				finale.addAll(parziale);
+				min = p;
+				
+				
+				
+				
+			}
+			return;
+		}
+		for (Driver d : listaD) {
+			if (!parziale.contains(d)) {
+				parziale.add(d);
+				cerca (livello+1, parziale, finale, k);
+				parziale.remove(parziale.size()-1);
+			}
+			
+		}
+		
+		
+	}
+
+	private int getPunteggio(List<Driver> parziale) {
+		int p = 0;
+		for (Driver d : parziale) {
+			p+=Graphs.predecessorListOf(grafo, d).size();
+		}
+		return p;
+	}
+	
+	
+	
+	
 
 }
